@@ -39,6 +39,10 @@ Variavel disponivel:
 
 ```env
 API_BASE_URL=http://127.0.0.1:8000
+API_JWT_SECRET_KEY=dev-secret-change-me
+API_JWT_ISSUER=rag-frontend
+API_JWT_AUDIENCE=rag-backend
+API_JWT_EXPIRES_SECONDS=300
 ```
 
 ## Como Rodar
@@ -108,6 +112,19 @@ src/
 - Exibicao de fontes retornadas pela API
 - Tratamento de erros quando o backend esta indisponivel
 - Layout responsivo
+- Headers basicos de seguranca configurados no Next.js
+- JWT Bearer gerado nas rotas proxy para comunicacao com o backend
+
+## Seguranca Basica
+
+O arquivo `next.config.ts` aplica headers HTTP basicos em todas as rotas:
+
+- `X-Content-Type-Options`
+- `X-Frame-Options`
+- `Referrer-Policy`
+- `Permissions-Policy`
+
+As chamadas para o backend passam por `src/lib/api.ts`, que gera um JWT HS256 server-side e envia o header `Authorization: Bearer <token>`. O valor de `API_JWT_SECRET_KEY` deve ser igual ao `JWT_SECRET_KEY` configurado no backend.
 
 ## Validacao
 
@@ -123,3 +140,9 @@ npm run build
 - O frontend depende do backend para responder perguntas.
 - Arquivos locais como `.env.local`, `.next/`, `node_modules/` e logs sao ignorados pelo Git.
 - Ajuste `API_BASE_URL` quando a API estiver em outro host ou ambiente.
+
+## Licenca
+
+MIT.
+
+Autor: Ronaldo Aguiar.
